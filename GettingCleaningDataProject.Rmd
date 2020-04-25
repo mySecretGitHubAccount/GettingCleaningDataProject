@@ -59,19 +59,23 @@ testSet <- read.table("UCI HAR Dataset/test/X_test.txt", header=FALSE ,sep="")
 colnames(testSet) <- namesDataVec
 ```
 
-We combine the two datasets:
+We combine the two datasets and store the result in the dataFrame: "tranTestSet"
 ```{r}
 tranTestSet<-rbind(trainingSet,testSet)
+write.table(x = tranTestSet[100,], file = "tidyData.txt",  sep = ",", col.names=T, append=T)
 ```
 
 
 2. Extracts only the measurements on the mean and standard deviation for each measurement.
+We store the result in the dataFrame: "tranTestMeanStdSet"
 ```{r}
 logicalVec <- (grepl("mean|std",namesDataVec))
 tranTestMeanStdSet <- tranTestSet[logicalVec,]
+write.table(x = tranTestMeanStdSet[100,], file = "tidyData.txt",  sep = ",", col.names=T, append=T)
 ```
 
 3. Uses descriptive activity names to name the activities in the data set
+We store the results back in "trainingSet" and "testSet".
 ```{r}
 activityData    <- read.table("UCI HAR Dataset/activity_labels.txt", header=FALSE ,sep="")
 
@@ -100,12 +104,15 @@ trainingSet     <-cbind(trainingSet,trainSubjectSet)
 ```
 
 Finally, we calculte the mean of each variable in both sets
+We store the results back in "testSetMeanGroup" and "trainingSetMeanGroup".
 ```{r}
 testSetMeanGroup <- testSet     %>% group_by(ActivityType, Subject) %>%  summarise_if(is.numeric, mean, na.rm = TRUE)
+write.table(x = testSetMeanGroup[100,], file = "tidyData.txt",  sep = ",", col.names=T, append=T)
 str(testSetMeanGroup)
 ```
 ```{r}
 trainingSetMeanGroup <- trainingSet %>% group_by(ActivityType, Subject) %>%  summarise_if(is.numeric, mean, na.rm = TRUE)
+write.table(x = trainingSetMeanGroup[100,], file = "tidyData.txt",  sep = ",", col.names=T, append=T)
 str(trainingSetMeanGroup)
 ```
 

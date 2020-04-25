@@ -414,15 +414,21 @@ colnames(trainingSet) &lt;- namesDataVec
 
 testSet &lt;- read.table(&quot;UCI HAR Dataset/test/X_test.txt&quot;, header=FALSE ,sep=&quot;&quot;)
 colnames(testSet) &lt;- namesDataVec</code></pre>
-<p>We combine the two datasets:</p>
-<pre class="r"><code>tranTestSet&lt;-rbind(trainingSet,testSet)</code></pre>
+<p>We combine the two datasets and store the result in the dataFrame: “tranTestSet”</p>
+<pre class="r"><code>tranTestSet&lt;-rbind(trainingSet,testSet)
+write.table(x = tranTestSet[100,], file = &quot;tidyData.txt&quot;,  sep = &quot;,&quot;, col.names=T, append=T)</code></pre>
+<pre><code>## Warning in write.table(x = tranTestSet[100, ], file = &quot;tidyData.txt&quot;, sep =
+## &quot;,&quot;, : appending column names to file</code></pre>
 <ol start="2" style="list-style-type: decimal">
-<li>Extracts only the measurements on the mean and standard deviation for each measurement.</li>
+<li>Extracts only the measurements on the mean and standard deviation for each measurement. We store the result in the dataFrame: “tranTestMeanStdSet”</li>
 </ol>
 <pre class="r"><code>logicalVec &lt;- (grepl(&quot;mean|std&quot;,namesDataVec))
-tranTestMeanStdSet &lt;- tranTestSet[logicalVec,]</code></pre>
+tranTestMeanStdSet &lt;- tranTestSet[logicalVec,]
+write.table(x = tranTestMeanStdSet[100,], file = &quot;tidyData.txt&quot;,  sep = &quot;,&quot;, col.names=T, append=T)</code></pre>
+<pre><code>## Warning in write.table(x = tranTestMeanStdSet[100, ], file = &quot;tidyData.txt&quot;, :
+## appending column names to file</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li>Uses descriptive activity names to name the activities in the data set</li>
+<li>Uses descriptive activity names to name the activities in the data set We store the results back in “trainingSet” and “testSet”.</li>
 </ol>
 <pre class="r"><code>activityData    &lt;- read.table(&quot;UCI HAR Dataset/activity_labels.txt&quot;, header=FALSE ,sep=&quot;&quot;)
 
@@ -446,9 +452,18 @@ colnames(testSubjectSet) &lt;- &quot;Subject&quot;
 colnames(trainSubjectSet) &lt;- &quot;Subject&quot;
 testSet         &lt;-cbind(testSet,testSubjectSet)
 trainingSet     &lt;-cbind(trainingSet,trainSubjectSet)</code></pre>
-<p>Finally, we calculte the mean of each variable in both sets</p>
+<p>Finally, we calculte the mean of each variable in both sets We store the results back in “testSetMeanGroup” and “trainingSetMeanGroup”.</p>
 <pre class="r"><code>testSetMeanGroup &lt;- testSet     %&gt;% group_by(ActivityType, Subject) %&gt;%  summarise_if(is.numeric, mean, na.rm = TRUE)
-str(testSetMeanGroup)</code></pre>
+write.table(x = testSetMeanGroup[100,], file = &quot;tidyData.txt&quot;,  sep = &quot;,&quot;, col.names=T, append=T)</code></pre>
+<pre><code>## Warning: The `i` argument of ``[.tbl_df`()` must lie in [0, rows] if positive, as of tibble 3.0.0.
+## Use `NA` as row index to obtain a row full of `NA` values.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_warnings()` to see where this warning was generated.</code></pre>
+<pre><code>## Warning: Factor `ActivityType` contains implicit NA, consider using
+## `forcats::fct_explicit_na`</code></pre>
+<pre><code>## Warning in write.table(x = testSetMeanGroup[100, ], file = &quot;tidyData.txt&quot;, :
+## appending column names to file</code></pre>
+<pre class="r"><code>str(testSetMeanGroup)</code></pre>
 <pre><code>## tibble [54 × 563] (S3: grouped_df/tbl_df/tbl/data.frame)
 ##  $ ActivityType                     : Factor w/ 6 levels &quot;LAYING&quot;,&quot;SITTING&quot;,..: 1 1 1 1 1 1 1 1 1 2 ...
 ##  $ Subject                          : int [1:54] 2 4 9 10 12 13 18 20 24 2 ...
@@ -561,7 +576,10 @@ str(testSetMeanGroup)</code></pre>
 ##   .. ..$ : int [1:9] 46 47 48 49 50 51 52 53 54
 ##   ..- attr(*, &quot;.drop&quot;)= logi TRUE</code></pre>
 <pre class="r"><code>trainingSetMeanGroup &lt;- trainingSet %&gt;% group_by(ActivityType, Subject) %&gt;%  summarise_if(is.numeric, mean, na.rm = TRUE)
-str(trainingSetMeanGroup)</code></pre>
+write.table(x = trainingSetMeanGroup[100,], file = &quot;tidyData.txt&quot;,  sep = &quot;,&quot;, col.names=T, append=T)</code></pre>
+<pre><code>## Warning in write.table(x = trainingSetMeanGroup[100, ], file = &quot;tidyData.txt&quot;, :
+## appending column names to file</code></pre>
+<pre class="r"><code>str(trainingSetMeanGroup)</code></pre>
 <pre><code>## tibble [126 × 563] (S3: grouped_df/tbl_df/tbl/data.frame)
 ##  $ ActivityType                     : Factor w/ 6 levels &quot;LAYING&quot;,&quot;SITTING&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ Subject                          : int [1:126] 1 3 5 6 7 8 11 14 15 16 ...

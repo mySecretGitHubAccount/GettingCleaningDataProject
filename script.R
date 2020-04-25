@@ -33,11 +33,13 @@ colnames(testSet) <- namesDataVec
 str(testSet)
 
 tranTestSet<-rbind(trainingSet,testSet)
+write.table(x = tranTestSet[100,], file = "tidyData.txt",  sep = ",", col.names=T, append=T)
 str(tranTestSet)
 
 # 2. Extracts only the measurements on the mean and standard deviation for each measurement.
 logicalVec <- (grepl("mean|std",namesDataVec))
 tranTestMeanStdSet <- tranTestSet[logicalVec,]
+write.table(x = tranTestMeanStdSet[100,], file = "tidyData.txt",  sep = ",", col.names=T, append=T)
 str(tranTestMeanStdSet)
 
 # 3. Uses descriptive activity names to name the activities in the data set
@@ -67,4 +69,10 @@ trainingSet     <-cbind(trainingSet,trainSubjectSet)
 
 testSet     %>% group_by(ActivityType, Subject) %>%  summarise_if(is.numeric, mean, na.rm = TRUE)
 trainingSet %>% group_by(ActivityType, Subject) %>%  summarise_if(is.numeric, mean, na.rm = TRUE)
+write.table(x = testSet[100,], file = "tidyData.txt",  sep = ",", col.names=T, append=T)
+write.table(x = trainingSet[100,], file = "tidyData.txt",  sep = ",", col.names=T, append=T)
+
+
+
+
 
